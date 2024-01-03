@@ -143,6 +143,15 @@ display(example_df)
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC # First notebook
+# MAGIC
+# MAGIC - RUN
+# MAGIC
+# MAGIC <https://www.markdownguide.org>
+
+# COMMAND ----------
+
 # DBTITLE 0,--i18n-55b2a6c6-2fc6-4c57-8d6d-94bba244d86e
 # MAGIC %md
 # MAGIC
