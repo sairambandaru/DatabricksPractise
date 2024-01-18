@@ -74,7 +74,12 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> "${DA.paths.kafka_events}" 
+SELECT * FROM json.`${DA.paths.kafka_events}`;
+CREATE TABLE IF NOT EXISTS events_json(key binary, offset bigint, partition int, timestamp bigint, topic string, value binary) USING json location '${DA.paths.kafka_events}';
+
+-- COMMAND ----------
+
+select * from events_json;
 
 -- COMMAND ----------
 
@@ -84,6 +89,12 @@
 -- MAGIC
 -- MAGIC
 -- MAGIC **NOTE**: We'll use Python to run checks occasionally throughout the lab. The following cell will return an error with a message on what needs to change if you have not followed instructions. No output from cell execution means that you have completed this step.
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC # spark.table("events_json")
+-- MAGIC spark.table("events_json").columns
 
 -- COMMAND ----------
 

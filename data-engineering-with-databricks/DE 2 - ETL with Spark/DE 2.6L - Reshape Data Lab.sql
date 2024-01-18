@@ -119,9 +119,31 @@ CREATE OR REPLACE TEMP VIEW events_pivot
 
 -- MAGIC %python
 -- MAGIC # TODO
--- MAGIC (spark.read
--- MAGIC     <FILL_IN>
--- MAGIC     .createOrReplaceTempView("events_pivot"))
+-- MAGIC events_df = spark.read.table('events')
+-- MAGIC # display(events_df.select('event_name').distinct())
+-- MAGIC # events_df.select('event_name').distinct().collect()
+-- MAGIC # print(events_df.columns)
+-- MAGIC #events_df = events_df.withColumnRenamed("user_id", "user")
+-- MAGIC #display(events_df)
+-- MAGIC # user_events_cnt_df = events_df.groupBy('user','event_name').count()
+-- MAGIC # display(user_events_cnt_df)
+-- MAGIC events_pivot_df = events_df.groupBy('user_id').pivot('event_name').count().withColumnRenamed("user_id", "user")
+-- MAGIC events_pivot_df.createOrReplaceTempView("events_pivot")
+-- MAGIC #.agg(count('event_count')).show()
+-- MAGIC
+
+-- COMMAND ----------
+
+(spark.read.table("events")
+    .groupBy("user_id")
+    .pivot("event_name")
+    .count()
+    .withColumnRenamed("user_id", "user")
+    .createOrReplaceTempView("events_pivot"))
+
+-- COMMAND ----------
+
+select count(*) from events_pivot;
 
 -- COMMAND ----------
 
@@ -195,9 +217,25 @@ CREATE OR REPLACE TEMP VIEW clickpaths AS
 
 -- MAGIC %python
 -- MAGIC # TODO
--- MAGIC (spark.read
--- MAGIC     <FILL_IN>
--- MAGIC     .createOrReplaceTempView("clickpaths"))
+-- MAGIC transactions_df = spark.read.table('transactions')
+-- MAGIC # display(transactions_df)
+-- MAGIC # dir(transactions_df)
+-- MAGIC
+-- MAGIC clickpaths_df = transactions_df.join(events_pivot_df,[transactions_df.user_id==events_pivot_df.user])#.drop(transactions_df.user_id)
+-- MAGIC display(clickpaths_df)    
+-- MAGIC clickpaths_df.createOrReplaceTempView("clickpaths")
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC clickpaths_df.columns
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC expected_cols = ['user', 'cart', 'pillows', 'login', 'main', 'careers', 'guest', 'faq', 'down', 'warranty', 'finalize', 'register', 'shipping_info', 'checkout', 'mattresses', 'add_item', 'press', 'email_coupon', 'cc_info', 'foam', 'reviews', 'original', 'delivery', 'premium', 'user_id', 'order_id', 'transaction_timestamp', 'total_item_quantity', 'purchase_revenue_in_usd', 'unique_items', 'P_FOAM_K', 'M_STAN_Q', 'P_FOAM_S', 'M_PREM_Q', 'M_STAN_F', 'M_STAN_T', 'M_PREM_K', 'M_PREM_F', 'M_STAN_K', 'M_PREM_T', 'P_DOWN_S', 'P_DOWN_K'] 
+-- MAGIC
+-- MAGIC print([i for i in expected_cols if i not in clickpaths_df.columns])
 
 -- COMMAND ----------
 

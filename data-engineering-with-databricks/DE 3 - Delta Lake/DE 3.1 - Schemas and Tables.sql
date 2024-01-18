@@ -69,6 +69,10 @@ DESCRIBE SCHEMA EXTENDED ${da.schema_name}_default_location;
 
 -- COMMAND ----------
 
+
+
+-- COMMAND ----------
+
 -- DBTITLE 0,--i18n-a0fda220-4a73-419b-969f-664dd4b80024
 -- MAGIC %md
 -- MAGIC ## Managed Tables
@@ -99,6 +103,11 @@ SELECT * FROM managed_table;
 -- COMMAND ----------
 
 DESCRIBE DETAIL managed_table;
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC dbutils.fs.ls('dbfs:/user/hive/warehouse/sairamb2024_1cre_da_delp_default_location.db')
 
 -- COMMAND ----------
 
@@ -180,7 +189,20 @@ SELECT * FROM external_table;
 
 -- COMMAND ----------
 
+-- MAGIC %python
+-- MAGIC dbutils.fs.ls('dbfs:/user/hive/warehouse/sairamb2024_1cre_da_delp_default_location.db')
+
+-- COMMAND ----------
+
+DESCRIBE detail external_table;
+
+-- COMMAND ----------
+
 DESCRIBE TABLE EXTENDED external_table;
+
+-- COMMAND ----------
+
+describe detail external_table;
 
 -- COMMAND ----------
 

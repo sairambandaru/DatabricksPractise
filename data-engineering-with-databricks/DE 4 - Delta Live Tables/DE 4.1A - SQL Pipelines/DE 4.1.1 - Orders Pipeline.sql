@@ -90,6 +90,11 @@ FROM cloud_files("${source}/orders", "json", map("cloudFiles.inferColumnTypes", 
 
 -- COMMAND ----------
 
+SELECT current_timestamp() processing_time, input_file_name() source_file, *
+FROM JSON.`"${source}"/orders`
+
+-- COMMAND ----------
+
 -- DBTITLE 0,--i18n-4be3b288-fd3b-4380-b32a-29fdb0d499ac
 -- MAGIC %md
 -- MAGIC ## Validating, Enriching, and Transforming Data

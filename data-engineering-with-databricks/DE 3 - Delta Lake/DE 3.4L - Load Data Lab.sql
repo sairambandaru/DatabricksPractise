@@ -72,7 +72,22 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+create schema if not exists delta_demo;
+-- create 
+
+-- COMMAND ----------
+
+DESCRIBE SCHEMA EXTENDED delta_demo;
+
+-- COMMAND ----------
+
+USE SCHEMA delta_demo;
+CREATE OR REPLACE TABLE events_raw(key BINARY,offset LONG,partition INTEGER,timestamp LONG, topic STRING, value BINARY);
+
+-- COMMAND ----------
+
+describe history events_raw;
+describe extended events_raw;
 
 -- COMMAND ----------
 
@@ -115,7 +130,7 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+INSERT INTO delta_Demo.events_raw  SELECT * FROM sairamb2024_1cre_da_delp.events_json;
 
 -- COMMAND ----------
 
@@ -128,8 +143,21 @@
 
 -- COMMAND ----------
 
--- TODO
-<FILL_IN>
+-- MAGIC %python
+-- MAGIC #TODO
+-- MAGIC
+-- MAGIC print(spark.table(' delta_demo.events_raw').count())
+-- MAGIC
+-- MAGIC print(spark.table('sairamb2024_1cre_da_delp.events_json').count())
+-- MAGIC
+-- MAGIC
+
+-- COMMAND ----------
+
+-- DESCRIBE HISTORY sairamb2024_1cre_da_delp.events_json;
+-- DESCRIBE HISTORY delta_demo.events_raw;
+SHOW CREATE TABLE delta_demo.events_raw;
+-- SHOW CREATE TABLE sairamb2024_1cre_da_delp.events_json
 
 -- COMMAND ----------
 
@@ -172,7 +200,10 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/ecommerce/raw/item-lookup
+-- CREATE OR REPLACE TABLE item_lookup AS SELECT * FROM partquet.`${da.paths.datasets}/ecommerce/raw/item-lookup`;
+-- TODO
+CREATE OR REPLACE TABLE item_lookup AS
+SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/item-lookup`;
 
 -- COMMAND ----------
 

@@ -96,7 +96,7 @@ SELECT count(*) FROM users_dirty WHERE email IS NULL;
 -- MAGIC from pyspark.sql.functions import col
 -- MAGIC usersDF = spark.read.table("users_dirty")
 -- MAGIC
--- MAGIC usersDF.selectExpr("count_if(email IS NULL)")
+-- MAGIC usersDF.selectExpr("count_if(email IS NULL) AS null_email_count").show()
 -- MAGIC usersDF.where(col("email").isNull()).count()
 
 -- COMMAND ----------
@@ -109,7 +109,7 @@ SELECT count(*) FROM users_dirty WHERE email IS NULL;
 
 -- COMMAND ----------
 
-SELECT DISTINCT(*) FROM users_dirty
+SELECT DISTINCT(*) FROM users_dirty;
 
 -- COMMAND ----------
 
@@ -139,6 +139,21 @@ WHERE user_id IS NOT NULL
 GROUP BY user_id, user_first_touch_timestamp;
 
 SELECT count(*) FROM deduped_users
+
+-- COMMAND ----------
+
+SELECT user_id, count(user_id)
+FROM users_dirty
+WHERE user_id IS NOT NULL
+GROUP BY user_id HAVING count(user_id) >1;
+
+-- COMMAND ----------
+
+SELECT user_id, user_first_touch_timestamp, max(email), max(updated)
+--max(email) AS email, max(updated) AS updated
+FROM users_dirty
+WHERE user_id IS NOT NULL AND user_id in ('UA000000107335605','UA000000107392855')
+GROUP BY user_id, user_first_touch_timestamp;
 
 -- COMMAND ----------
 
@@ -188,7 +203,7 @@ WHERE user_id IS NOT NULL
 
 -- COMMAND ----------
 
-SELECT max(row_count) <= 1 no_duplicate_ids FROM (
+SELECT max(row_count) <= 1 AS no_duplicate_ids FROM (
   SELECT user_id, count(*) AS row_count
   FROM deduped_users
   GROUP BY user_id)

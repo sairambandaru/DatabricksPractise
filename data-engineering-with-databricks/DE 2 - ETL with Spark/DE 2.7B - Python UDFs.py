@@ -128,6 +128,16 @@ display(sales_df.select(first_letter_udf(col("email"))))
 
 # COMMAND ----------
 
+# Test
+@udf
+def test_last_letter_udf(email):
+  return email[::-1]
+
+display(sales_df.select(test_last_letter_udf(col("email"))))
+
+
+# COMMAND ----------
+
 # DBTITLE 0,--i18n-3ae354c0-0b10-4e8c-8cf6-da68e8fba9f2
 # MAGIC %md
 # MAGIC

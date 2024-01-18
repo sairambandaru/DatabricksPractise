@@ -174,6 +174,11 @@ CREATE OR REPLACE TABLE purchase_dates (
 
 -- COMMAND ----------
 
+select * from purchase_dates;
+select count(*) from purchases;
+
+-- COMMAND ----------
+
 -- DBTITLE 0,--i18n-33e94ae0-f443-4cc9-9691-30b8b08179aa
 -- MAGIC %md
 -- MAGIC
@@ -220,8 +225,16 @@ SELECT * FROM purchase_dates
 
 -- COMMAND ----------
 
--- INSERT INTO purchase_dates VALUES
--- (1, 600000000, 42.0, "2020-06-18")
+INSERT INTO purchase_dates VALUES
+(1, 600000000, 42.0, "2020-06-18")
+
+-- COMMAND ----------
+
+describe detail purchase_dates;
+
+-- COMMAND ----------
+
+describe extended purchase_dates
 
 -- COMMAND ----------
 
@@ -285,6 +298,11 @@ DESCRIBE EXTENDED purchase_dates
 -- MAGIC **NOTE**: Partitioning is shown here primarily to demonstrate syntax and impact. Most Delta Lake tables (especially small-to-medium sized data) will not benefit from partitioning. Because partitioning physically separates data files, this approach can result in a small files problem and prevent file compaction and efficient data skipping. The benefits observed in Hive or HDFS do not translate to Delta Lake, and you should consult with an experienced Delta Lake architect before partitioning tables.
 -- MAGIC
 -- MAGIC **As a best practice, you should default to non-partitioned tables for most use cases when working with Delta Lake.**
+
+-- COMMAND ----------
+
+SELECT *
+  FROM parquet.`${da.paths.datasets}/ecommerce/raw/users-historical/`;
 
 -- COMMAND ----------
 
